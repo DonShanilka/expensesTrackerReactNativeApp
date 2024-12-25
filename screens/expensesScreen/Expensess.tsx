@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View, TextInput,Button} from 'react-native';
+import {StyleSheet, Text, View, TextInput, Button} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import DatePicker from 'react-native-date-picker';
 
@@ -10,7 +10,7 @@ function Expensess() {
     price: '',
     date: '',
   });
-  
+
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
 
@@ -22,36 +22,46 @@ function Expensess() {
         justifyContent: 'center',
         backgroundColor: '#ffffff',
       }}>
-      <Picker
-        placeholder="Name"
-        selectedValue={formData.category}
-        style={styles.picker}
-        onValueChange={value => setFormData({...formData, category: value})}>
-        <Picker.Item label="Select category" value="" enabled={true} />
-        <Picker.Item label="Foods" value="Foods" />
-        <Picker.Item label="Education" value="education" />
-        <Picker.Item label="Transport" value="transport" />
-        <Picker.Item label="Shopping" value="shopping" />
-        <Picker.Item label="Other" value="other" />
-      </Picker>
+      <Text
+        style={{position: 'absolute', top: '3%', right: '2%', fontSize: 20}}>
+        Date: {date.toDateString()}
+      </Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Item Name"
-        placeholderTextColor="#aaa"
-        value={formData.itemName}
-        onChangeText={value => setFormData({...formData, itemName: value})}
-      />
+      <View style={{
+        width:"100%",
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#ffffff',
+        }}>
+        <Picker
+          placeholder="Name"
+          selectedValue={formData.category}
+          style={styles.picker}
+          onValueChange={value => setFormData({...formData, category: value})}>
+          <Picker.Item label="Select category" value="" enabled={true} />
+          <Picker.Item label="Foods" value="foods" />
+          <Picker.Item label="Education" value="education" />
+          <Picker.Item label="Transport" value="transport" />
+          <Picker.Item label="Shopping" value="shopping" />
+          <Picker.Item label="Other" value="other" />
+        </Picker>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Price"
-        placeholderTextColor="#aaa"
-        value={formData.price}
-        onChangeText={value => setFormData({...formData, price: value})}
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Item Name"
+          placeholderTextColor="#aaa"
+          value={formData.itemName}
+          onChangeText={value => setFormData({...formData, itemName: value})}
+        />
 
-      <Text style={styles}>Selected Date: {date.toDateString()}</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Price"
+          placeholderTextColor="#aaa"
+          value={formData.price}
+          onChangeText={value => setFormData({...formData, price: value})}
+        />
+      </View>
     </View>
   );
 }
@@ -78,8 +88,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#f2f2f2',
     color: '#000000',
   },
-  datelable:{
-
+  datelable: {
+    position: 'absolute',
+    top: '40%',
   },
 });
 
