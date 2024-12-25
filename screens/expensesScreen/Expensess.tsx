@@ -51,7 +51,7 @@ function Expensess() {
         onChangeText={value => setFormData({...formData, price: value})}
       />
 
-      <Text>Selected Date: {date.toDateString()}</Text>
+      <Text style={styles}>Selected Date: {date.toDateString()}</Text>
     </View>
   );
 }
@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
   },
   picker: {
     width: '90%',
-    // ite:"left",
     height: 50,
     borderWidth: 1,
     borderColor: '#ccc',
@@ -78,6 +77,9 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     backgroundColor: '#f2f2f2',
     color: '#000000',
+  },
+  datelable:{
+
   },
 });
 
