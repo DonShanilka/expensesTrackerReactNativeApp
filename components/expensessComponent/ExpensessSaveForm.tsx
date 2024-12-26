@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity, FlatList} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import ExpensessCard from './ExpensessCard';
+import axios from 'axios';
 
 function ExpensessSaveForm() {
 
@@ -11,6 +12,7 @@ function ExpensessSaveForm() {
     itemName: string;
     price: string;
     date: string;
+    email:string;
   }
 
   const [formData, setFormData] = useState<FormData>({
@@ -19,6 +21,7 @@ function ExpensessSaveForm() {
     itemName: '',
     price: '',
     date: '',
+    email:'shanilka@gmail.com'
   });
 
   const [expenses, setExpenses] = useState<FormData[]>([]);
@@ -26,7 +29,34 @@ function ExpensessSaveForm() {
   const [date, setDate] = useState(new Date());
   formData.date = date.toISOString().split('T')[0];
 
-  const handleSubmit = () => {
+  // const handleSubmit = () => {
+  //   if (!formData.category || !formData.itemName || !formData.price || !formData.date) {
+  //     Alert.alert('Validation Error', 'All fields are required.');
+  //     return;
+  //   }
+
+  //   // Add the form data to the expenses list
+  //   setExpenses((prevExpenses) => [
+  //     ...prevExpenses,
+  //     { ...formData, id: Math.random().toString() }, // Assign a unique ID
+  //   ]);
+
+  //   // Reset form data
+  //   setFormData({
+  //     id: '',
+  //     category: '',
+  //     itemName: '',
+  //     price: '',
+  //     date: '',
+  //     email:''
+  //   });
+  // };
+
+  const handleDelete = (id) => {
+    setExpenses(prevStudents => prevStudents.filter(expenses => expenses.id !== id));
+  };
+
+  const handleSubmit = async () => {
     if (!formData.category || !formData.itemName || !formData.price || !formData.date) {
       Alert.alert('Validation Error', 'All fields are required.');
       return;
@@ -45,12 +75,28 @@ function ExpensessSaveForm() {
       itemName: '',
       price: '',
       date: '',
+      email:''
     });
-  };
 
-  const handleDelete = (id) => {
-    setExpenses(prevStudents => prevStudents.filter(expenses => expenses.id !== id));
-};
+    try {
+        const response = await axios.post('http://localhost:3000/api/saveData', {
+            category: formData.category,
+            price: formData.price,
+            date: formData.date,
+            itemname: formData.itemName,
+            userEmail: formData.email,
+        });
+        // Alert
+        // alert("Data Save successful: " + response.data.message);
+        // navigate('/login')
+    } catch (error) {
+        console.error('Error during registration:', error);
+        // alert('Save failed: ' + (error.response?.data?.error || 'Unknown error'));
+
+    }
+    // toggleModal();
+    // window.location.reload();
+  };
 
   return (
     <View style={styles.form}>
