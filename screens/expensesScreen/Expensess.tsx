@@ -1,10 +1,18 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, View, TextInput, Button} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import DatePicker from 'react-native-date-picker';
 
 function Expensess() {
-  const [formData, setFormData] = useState({
+
+  interface FormData {
+    category: string;
+    itemName: string;
+    price: string;
+    date: string;
+  }
+
+  const [formData, setFormData] = useState<FormData>({
     category: '',
     itemName: '',
     price: '',
@@ -14,83 +22,105 @@ function Expensess() {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
 
+  const newDate = date.toString();
+
+  const handleSubmit = () => {
+    if (!formData.category || !formData.itemName || !formData.price || !formData.date) {
+      Alert.alert('Validation Error', 'All fields are required.');
+      return;
+    }
+    // Handle form submission logic here
+    console.log(formData);
+  };
+
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#ffffff',
-      }}>
-      <Text
-        style={{position: 'absolute', top: '3%', right: '2%', fontSize: 20}}>
-        Date: {date.toDateString()}
-      </Text>
-
-      <View style={{
-        width:"100%",
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#ffffff',
-        }}>
+    <View style={styles.form}>
+      <View style={styles.field}>
+        <Text style={styles.label}>Category</Text>
         <Picker
-          placeholder="Name"
           selectedValue={formData.category}
-          style={styles.picker}
-          onValueChange={value => setFormData({...formData, category: value})}>
-          <Picker.Item label="Select category" value="" enabled={true} />
-          <Picker.Item label="Foods" value="foods" />
-          <Picker.Item label="Education" value="education" />
-          <Picker.Item label="Transport" value="transport" />
-          <Picker.Item label="Shopping" value="shopping" />
-          <Picker.Item label="Other" value="other" />
+          style={styles.input}
+          onValueChange={(itemValue) =>
+            setFormData({ ...formData, category: itemValue })
+          }
+        >
+          <Picker.Item label="Select category" value="" />
+          <Picker.Item label="Foods" value="Foods" />
+          <Picker.Item label="Education" value="Education" />
+          <Picker.Item label="Transport" value="Transport" />
+          <Picker.Item label="Shopping" value="Shopping" />
+          <Picker.Item label="Other" value="Other" />
         </Picker>
+      </View>
 
+      <View style={styles.field}>
+        <Text style={styles.label}>Item Name</Text>
         <TextInput
           style={styles.input}
-          placeholder="Item Name"
-          placeholderTextColor="#aaa"
+          placeholder="Enter item name"
           value={formData.itemName}
-          onChangeText={value => setFormData({...formData, itemName: value})}
+          onChangeText={(text) =>
+            setFormData({ ...formData, itemName: text })
+          }
         />
+      </View>
 
+      <View style={styles.field}>
+        <Text style={styles.label}>Amount</Text>
         <TextInput
           style={styles.input}
-          placeholder="Price"
-          placeholderTextColor="#aaa"
+          placeholder="Enter amount"
+          keyboardType="numeric"
           value={formData.price}
-          onChangeText={value => setFormData({...formData, price: value})}
+          onChangeText={(text) =>
+            setFormData({ ...formData, price: text })
+          }
         />
+      </View>
+
+      <View style={styles.field}>
+        <Text style={styles.label}>Date</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="YYYY-MM-DD"
+          value={formData.date}
+          onChangeText={(text) =>
+            setFormData({ ...formData, date: text })
+          }
+        />
+      </View>
+
+      <View style={styles.submitBtn}>
+        <Button title="Submit" color="#34D399" onPress={handleSubmit} />
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  form: {
+    padding: 16,
+  },
+  field: {
+    marginBottom: 16,
+  },
+  label: {
+    fontSize: 16,
+    color: '#374151',
+    marginBottom: 4,
+  },
   input: {
-    width: '90%',
-    height: 50,
-    borderColor: '#ccc',
+    height: 48,
     borderWidth: 1,
+    borderColor: '#D1D5DB',
     borderRadius: 8,
-    paddingHorizontal: 15,
-    marginBottom: 15,
-    backgroundColor: '#fff',
+    paddingHorizontal: 8,
+    fontSize: 16,
   },
-  picker: {
-    width: '90%',
-    height: 50,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    paddingHorizontal: 15,
-    marginBottom: 15,
-    backgroundColor: '#f2f2f2',
-    color: '#000000',
-  },
-  datelable: {
-    position: 'absolute',
-    top: '40%',
+  submitBtn: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginTop: 16,
   },
 });
 
