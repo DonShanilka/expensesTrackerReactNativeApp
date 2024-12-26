@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity, FlatList} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
+import ExpensessCard from './ExpensessCard';
 
 function ExpensessSaveForm() {
 
   interface FormData {
+    id: string;
     category: string;
     itemName: string;
     price: string;
@@ -12,24 +14,43 @@ function ExpensessSaveForm() {
   }
 
   const [formData, setFormData] = useState<FormData>({
+    id: '',
     category: '',
     itemName: '',
     price: '',
     date: '',
   });
 
+  const [expenses, setExpenses] = useState<FormData[]>([]);
+
   const [date, setDate] = useState(new Date());
-  
-  formData.date = date.toString();
+  formData.date = date.toISOString().split('T')[0];
 
   const handleSubmit = () => {
     if (!formData.category || !formData.itemName || !formData.price || !formData.date) {
       Alert.alert('Validation Error', 'All fields are required.');
       return;
     }
-    // Handle form submission logic here
-    console.log(formData);
+
+    // Add the form data to the expenses list
+    setExpenses((prevExpenses) => [
+      ...prevExpenses,
+      { ...formData, id: Math.random().toString() }, // Assign a unique ID
+    ]);
+
+    // Reset form data
+    setFormData({
+      id: '',
+      category: '',
+      itemName: '',
+      price: '',
+      date: '',
+    });
   };
+
+  const handleDelete = (id) => {
+    setExpenses(prevStudents => prevStudents.filter(expenses => expenses.id !== id));
+};
 
   return (
     <View style={styles.form}>
@@ -78,18 +99,37 @@ function ExpensessSaveForm() {
 
       <View style={styles.field}>
         <Text style={styles.label}>Date</Text>
-        {/* <TextInput
-          style={styles.input}
-          placeholder="YYYY-MM-DD"
-          value={formData.date}
-          onChangeText={(text) =>
-            setFormData({ ...formData, date: text })
-          }
-        /> */}
       </View>
       <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit}>
         <Text style={styles.submitBtnText}>SAVE</Text>
       </TouchableOpacity>
+
+      <View>
+      {expenses.map((expenses, index) => (
+        <ExpensessCard key={index} expenses={expenses} onDelete={handleDelete} />
+      ))}
+      </View>
+
+      {/* <FlatList
+        data={expenses}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View style={styles.card}>
+            <Text style={styles.cardText}>
+              <Text style={styles.bold}>Category:</Text> {item.category}
+            </Text>
+            <Text style={styles.cardText}>
+              <Text style={styles.bold}>Item:</Text> {item.itemName}
+            </Text>
+            <Text style={styles.cardText}>
+              <Text style={styles.bold}>Price:</Text> {item.price}
+            </Text>
+            <Text style={styles.cardText}>
+              <Text style={styles.bold}>Date:</Text> {item.date}
+            </Text>
+          </View>
+        )}
+      /> */}
     </View>
   )
 }
@@ -136,7 +176,25 @@ const styles = StyleSheet.create({
     fontWeight:'bold',
     color:'#ffffff',
     paddingHorizontal: 6,
-  }
+  },
+  card: {
+    backgroundColor: '#FFFFFF',
+    padding: 16,
+    marginBottom: 16,
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 2,
+  },
+  cardText: {
+    fontSize: 16,
+    marginBottom: 4,
+  },
+  bold: {
+    fontWeight: 'bold',
+  },
 });
 
 export default ExpensessSaveForm

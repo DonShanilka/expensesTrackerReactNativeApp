@@ -9,7 +9,7 @@ function Expensess() {
   return (
       <View style={styles.container}>
         <ExpensessSaveForm/>
-        <ExpensesTable/>
+        {/* <ExpensesTable/> */}
       </View>
   );
 }
