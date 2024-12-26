@@ -19,9 +19,8 @@ function ExpensessSaveForm() {
   });
 
   const [date, setDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
-
-  const newDate = date.toString();
+  
+  formData.date = date.toString();
 
   const handleSubmit = () => {
     if (!formData.category || !formData.itemName || !formData.price || !formData.date) {
@@ -79,14 +78,14 @@ function ExpensessSaveForm() {
 
       <View style={styles.field}>
         <Text style={styles.label}>Date</Text>
-        <TextInput
+        {/* <TextInput
           style={styles.input}
           placeholder="YYYY-MM-DD"
           value={formData.date}
           onChangeText={(text) =>
             setFormData({ ...formData, date: text })
           }
-        />
+        /> */}
       </View>
       <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit}>
         <Text style={styles.submitBtnText}>SAVE</Text>
@@ -118,7 +117,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 8,
     fontSize: 16,
-    color:'#cccccc'
+    color:'#0D9488'
   },
   submitBtn: {
     width: '100%',
