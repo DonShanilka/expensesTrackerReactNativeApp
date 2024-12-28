@@ -1,13 +1,14 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
 import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity, FlatList} from 'react-native';
 
 
-export default function ExpensessCard({expenses,onDelete}) {
+export default function ExpensessCard({expenses}) {
 
   // const deleteStudent=()=>{
-  //   instance.delete(`/student/delete/${expenses.id}`)
+  //   instance.delete(`/student/delete/${student.id}`)
   //       .then(function (response) {
-  //           onDelete(expenses.id);
+  //           onDelete(student.id);
   //           console.log('Student deleted successfully');
   //       })
   //       .catch(error => {

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -32,16 +32,19 @@ function ExpensessSaveForm() {
     email: 'shanilka@gmail.com',
   });
 
+  const userEmail = 'shanilka@gmail.com';
+
   const [expenses, setExpenses] = useState<FormData[]>([]);
+  const [expensesData, setexpensesData] = useState([]);
 
   const [date, setDate] = useState(new Date());
   formData.date = date.toISOString().split('T')[0];
 
-  // const handleDelete = id => {
-  //   setExpenses(prevStudents =>
-  //     prevStudents.filter(expenses => expenses.id !== id),
-  //   );
-  // };
+  const handleDelete = (id) => {
+    setExpenses(prevStudents =>
+      prevStudents.filter(expenses => expenses.id !== id),
+    );
+  };
 
   const handleSubmit = async () => {
     if (
@@ -75,6 +78,30 @@ function ExpensessSaveForm() {
       );
     }
   };
+
+  useEffect(() => {
+    const fetchExpenses = async () => {
+      // console.log(userEmail);
+      try {
+        // Retrieve userEmail from localStorage
+        // const userEmail = localStorage.getItem("userEmail");
+        // if (!userEmail) {
+        //   console.error("User email not found in localStorage");
+        //   return;
+        // }
+
+        // Make a GET request with userEmail as a parameter
+        const response = await axios.get(
+          `http://192.168.63.145:3000/api/getExpensesByUser/${userEmail}`
+        );
+        setexpensesData(response.data);
+        console.log(expensesData)
+      } catch (err) {
+        console.error("Error fetching expenses:", err);
+      }
+    };
+    fetchExpenses();
+  }, []);
 
   return (
     <View style={styles.form}>
@@ -124,35 +151,14 @@ function ExpensessSaveForm() {
       </TouchableOpacity>
 
       <View>
-        {expenses.map((expenses, index) => (
+        {expenses.map((expensesData, index) => (
           <ExpensessCard
             key={index}
-            expenses={expenses}
-            onDelete={handleDelete}
+            expenses={expensesData}
+            // onDelete={handleDelete}
           />
         ))}
       </View>
-
-      {/* <FlatList
-        data={expenses}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text style={styles.cardText}>
-              <Text style={styles.bold}>Category:</Text> {item.category}
-            </Text>
-            <Text style={styles.cardText}>
-              <Text style={styles.bold}>Item:</Text> {item.itemName}
-            </Text>
-            <Text style={styles.cardText}>
-              <Text style={styles.bold}>Price:</Text> {item.price}
-            </Text>
-            <Text style={styles.cardText}>
-              <Text style={styles.bold}>Date:</Text> {item.date}
-            </Text>
-          </View>
-        )}
-      /> */}
     </View>
   );
 }
