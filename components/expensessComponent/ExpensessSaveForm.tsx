@@ -1,18 +1,26 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity, FlatList} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  Alert,
+  TouchableOpacity,
+  FlatList,
+} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import ExpensessCard from './ExpensessCard';
 import axios from 'axios';
 
 function ExpensessSaveForm() {
-
   interface FormData {
     id: string;
     category: string;
     itemName: string;
     price: string;
     date: string;
-    email:string;
+    email: string;
   }
 
   const [formData, setFormData] = useState<FormData>({
@@ -21,7 +29,7 @@ function ExpensessSaveForm() {
     itemName: '',
     price: '',
     date: '',
-    email:'shanilka@gmail.com'
+    email: 'shanilka@gmail.com',
   });
 
   const [expenses, setExpenses] = useState<FormData[]>([]);
@@ -29,73 +37,43 @@ function ExpensessSaveForm() {
   const [date, setDate] = useState(new Date());
   formData.date = date.toISOString().split('T')[0];
 
-  // const handleSubmit = () => {
-  //   if (!formData.category || !formData.itemName || !formData.price || !formData.date) {
-  //     Alert.alert('Validation Error', 'All fields are required.');
-  //     return;
-  //   }
-
-  //   // Add the form data to the expenses list
-  //   setExpenses((prevExpenses) => [
-  //     ...prevExpenses,
-  //     { ...formData, id: Math.random().toString() }, // Assign a unique ID
-  //   ]);
-
-  //   // Reset form data
-  //   setFormData({
-  //     id: '',
-  //     category: '',
-  //     itemName: '',
-  //     price: '',
-  //     date: '',
-  //     email:''
-  //   });
+  // const handleDelete = id => {
+  //   setExpenses(prevStudents =>
+  //     prevStudents.filter(expenses => expenses.id !== id),
+  //   );
   // };
 
-  const handleDelete = (id) => {
-    setExpenses(prevStudents => prevStudents.filter(expenses => expenses.id !== id));
-  };
-
   const handleSubmit = async () => {
-    if (!formData.category || !formData.itemName || !formData.price || !formData.date) {
+    if (
+      !formData.category ||
+      !formData.itemName ||
+      !formData.price ||
+      !formData.date
+    ) {
       Alert.alert('Validation Error', 'All fields are required.');
       return;
     }
 
-    // Add the form data to the expenses list
-    setExpenses((prevExpenses) => [
-      ...prevExpenses,
-      { ...formData, id: Math.random().toString() }, // Assign a unique ID
-    ]);
-
-    // Reset form data
-    setFormData({
-      id: '',
-      category: '',
-      itemName: '',
-      price: '',
-      date: '',
-      email:''
-    });
-
     try {
-        const response = await axios.post('http://localhost:3000/api/saveData', {
-            category: formData.category,
-            price: formData.price,
-            date: formData.date,
-            itemname: formData.itemName,
-            userEmail: formData.email,
-        });
-        // Alert
-        // alert("Data Save successful: " + response.data.message);
-        // navigate('/login')
+      const response = await axios.post(
+        'http://192.168.63.145:3000/api/saveData',
+        {
+          category: formData.category,
+          price: formData.price,
+          date: formData.date,
+          itemname: formData.itemName,
+          userEmail: formData.email,
+        },
+      );
+      console.log('Data saved successfully:', response.data.message);
+      Alert.alert('Success', 'Expense saved successfully!');
     } catch (error) {
-        console.error('Error during registration:', error);
-        // alert('Save failed: ' + (error.response?.data?.error || 'Unknown error'));
-
+      console.error('Error during saving:', error);
+      Alert.alert(
+        'Error',
+        'Save failed: ' + (error.response?.data?.error || 'Unknown error'),
+      );
     }
-    // toggleModal();
-    // window.location.reload();
   };
 
   return (
@@ -105,10 +83,9 @@ function ExpensessSaveForm() {
         <Picker
           selectedValue={formData.category}
           style={styles.input}
-          onValueChange={(itemValue) =>
-            setFormData({ ...formData, category: itemValue })
-          }
-        >
+          onValueChange={itemValue =>
+            setFormData({...formData, category: itemValue})
+          }>
           <Picker.Item label="Select category" value="" />
           <Picker.Item label="Foods" value="Foods" />
           <Picker.Item label="Education" value="Education" />
@@ -124,9 +101,7 @@ function ExpensessSaveForm() {
           style={styles.input}
           placeholder="Enter item name"
           value={formData.itemName}
-          onChangeText={(text) =>
-            setFormData({ ...formData, itemName: text })
-          }
+          onChangeText={text => setFormData({...formData, itemName: text})}
         />
       </View>
 
@@ -137,9 +112,7 @@ function ExpensessSaveForm() {
           placeholder="Enter amount"
           keyboardType="numeric"
           value={formData.price}
-          onChangeText={(text) =>
-            setFormData({ ...formData, price: text })
-          }
+          onChangeText={text => setFormData({...formData, price: text})}
         />
       </View>
 
@@ -151,9 +124,13 @@ function ExpensessSaveForm() {
       </TouchableOpacity>
 
       <View>
-      {expenses.map((expenses, index) => (
-        <ExpensessCard key={index} expenses={expenses} onDelete={handleDelete} />
-      ))}
+        {expenses.map((expenses, index) => (
+          <ExpensessCard
+            key={index}
+            expenses={expenses}
+            onDelete={handleDelete}
+          />
+        ))}
       </View>
 
       {/* <FlatList
@@ -177,19 +154,19 @@ function ExpensessSaveForm() {
         )}
       /> */}
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   form: {
     padding: 16,
-    width:'100%',
+    width: '100%',
     // flexGrow: 1,
-    color:'#ffffff'
+    color: '#ffffff',
   },
   field: {
     marginBottom: 16,
-    color:'#cccccc'
+    color: '#cccccc',
   },
   label: {
     fontSize: 16,
@@ -203,7 +180,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 8,
     fontSize: 16,
-    color:'#0D9488'
+    color: '#0D9488',
   },
   submitBtn: {
     width: '100%',
@@ -213,14 +190,14 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 8,
     fontSize: 16,
-    backgroundColor:'#34D399',
+    backgroundColor: '#34D399',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  submitBtnText:{
+  submitBtnText: {
     fontSize: 18,
-    fontWeight:'bold',
-    color:'#ffffff',
+    fontWeight: 'bold',
+    color: '#ffffff',
     paddingHorizontal: 6,
   },
   card: {
@@ -231,7 +208,7 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     elevation: 2,
   },
   cardText: {
@@ -243,4 +220,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ExpensessSaveForm
+export default ExpensessSaveForm;
