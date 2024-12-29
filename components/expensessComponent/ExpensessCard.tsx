@@ -99,10 +99,11 @@ const styles = StyleSheet.create({
   cardText: {
     fontSize: 16,
     marginBottom: 4,
-    color:'',
+    color:'#34D399',
   },
   bold: {
     fontWeight: 'bold',
+    color:'#808080'
   },
 });
 
