@@ -3,7 +3,6 @@ import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity } fr
 import {Picker} from '@react-native-picker/picker';
 import DatePicker from 'react-native-date-picker';
 import ExpensessSaveForm from '../../components/expensessComponent/ExpensessSaveForm';
-import ExpensesTable from '../../components/expensessComponent/ExpensessTable';
 
 function Expensess() {
   return (

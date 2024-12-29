@@ -124,11 +124,6 @@ function ExpensessSaveForm() {
       <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit}>
         <Text style={styles.submitBtnText}>SAVE</Text>
       </TouchableOpacity>
-
-      {/* Pass expensesData to the card */}
-      {/* <ScrollView>
-        <ExpensessCard expensesData={expensesData} />
-      </ScrollView> */}
     </View>
   );
 }

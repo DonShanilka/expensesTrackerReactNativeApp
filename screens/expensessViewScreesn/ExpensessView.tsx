@@ -26,7 +26,7 @@ function ExpensessView() {
 
   return (
     <ScrollView style={styles.container}>
-      <ExpensessCard expensesData={expensesData} />
+      <ExpensessCard expensesData={expensesData}/>
     </ScrollView>
   )
 }
