@@ -5,6 +5,8 @@ import Regiter from './screens/registerScreen/Regiter';
 import Login from './screens/loginScreen/Login';
 import HomeScreen from './screens/homeScreen/HomeScreen';
 import { createStackNavigator } from '@react-navigation/stack';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+// import RootNavigator from './src/navigation/RootNavigator';
 
 function App() {
   
@@ -18,6 +20,11 @@ function App() {
     //   </Stack.Navigator>
     // </NavigationContainer>
     <HomeScreen/>
+    // <GestureHandlerRootView style={{ flex: 1 }}>
+    //   <NavigationContainer>
+    //     <RootNavigatore />
+    //   </NavigationContainer>
+    // </GestureHandlerRootView>
   );
 }
 

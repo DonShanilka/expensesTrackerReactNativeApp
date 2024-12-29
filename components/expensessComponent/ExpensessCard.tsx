@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity, FlatList} from 'react-native';
 
 
-export default function ExpensessCard({expenses}) {
+export default function ExpensessCard({expensesData}) {
 
   // const deleteStudent=()=>{
   //   instance.delete(`/student/delete/${student.id}`)
@@ -15,12 +15,14 @@ export default function ExpensessCard({expenses}) {
   //           console.log(Error);
   //       })
   // }
+  console.log("Card Data: ",expensesData)
 
   return (
     <FlatList
-        data={expenses}
+        data={expensesData}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
+        
           <View style={styles.card}>
             <Text style={styles.cardText}>
               <Text style={styles.bold}>Category:</Text> {item.category}
