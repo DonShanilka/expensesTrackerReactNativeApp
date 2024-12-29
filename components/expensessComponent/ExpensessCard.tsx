@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
   cardText: {
     fontSize: 16,
     marginBottom: 4,
+    color:'',
   },
   bold: {
     fontWeight: 'bold',
