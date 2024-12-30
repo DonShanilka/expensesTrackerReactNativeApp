@@ -17,7 +17,7 @@ export default function ExpensessCard({expensesData}) {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://192.168.169.54:3000/api/deleteExpenses/${id}`);
+      await axios.delete(`http:// 192.168.249.98:3000/api/deleteExpenses/${id}`);
       setExpenses((prevExpenses) =>
         prevExpenses.filter((expenses) => expenses.id !== id)
       );
