@@ -1,45 +1,51 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Picker, Alert } from 'react-native';
+import {
+  Modal,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 
-interface Expense {
-  id: string;
-  category: string;
-  itemName: string;
-  price: number;
-  date: string;
-}
+const UpdateExpensess = ({ isOpen, closeModal, expense }) => {
+  const [category, setCategory] = useState('');
+  const [itemName, setItemName] = useState('');
+  const [price, setPrice] = useState('');
+  const [date, setDate] = useState('');
+  const [expenseId, setExpenseId] = useState(null);
 
-interface UpdateFormProps {
-  isOpen: boolean;
-  closeModal: () => void;
-  expense: Expense | null; // `expense` can be null if not provided
-}
-
-const UpdateExpensess: React.FC<UpdateFormProps> = ({ isOpen, closeModal, expense }) => {
-  const [category, setCategory] = useState<string>(expense?.category || '');
-  const [itemName, setItemName] = useState<string>(expense?.itemName || '');
-  const [price, setPrice] = useState<string>(expense?.price.toString() || '');
-  const [date, setDate] = useState<string>(expense?.date || '');
+  // Initialize state when the component mounts or the `expense` prop changes
+  useEffect(() => {
+    if (expense) {
+      setExpenseId(expense.id || null);
+      setCategory(expense.category || '');
+      setItemName(expense.itemName || '');
+      setPrice(expense.price ? expense.price.toString() : '');
+      setDate(expense.date || '');
+    }
+  }, [expense]);
 
   const handleUpdate = async () => {
-    // Validate fields
-    if (!expense?.id || !category || !itemName || !price || !date) {
+    // Validation
+    if (!expenseId || !category || !itemName || !price || !date) {
+      console.log("ID=" + expenseId, "Category=" + category, "ItemName=" + itemName, "Price=" + price, "Date=" + date);
       Alert.alert('Validation Error', 'Please fill in all fields.');
       return;
     }
 
     try {
-      const response = await fetch('http:// 192.168.249.98/api/updateExpenses', {
+      const response = await fetch('http://192.168.249.98:3000/api/updateExpenses', {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          id: expense.id,
-          category,
-          itemname: itemName,
+          id: expenseId,
+          category: category,
+          itemName: itemName,
           price: parseFloat(price),
-          date,
+          date: date,
         }),
       });
 
@@ -49,9 +55,10 @@ const UpdateExpensess: React.FC<UpdateFormProps> = ({ isOpen, closeModal, expens
       }
 
       Alert.alert('Success', 'Expense updated successfully!');
-      closeModal(); // Close the modal after updating
-    } catch (error: any) {
-      Alert.alert('Error', error.message || 'Failed to update expense.');
+      closeModal();
+    } catch (error) {
+      console.error('[Update Error]', error.message);
+      Alert.alert('Error', error.message || 'Failed to connect to the server. Please try again later.');
     }
   };
 
@@ -64,8 +71,8 @@ const UpdateExpensess: React.FC<UpdateFormProps> = ({ isOpen, closeModal, expens
             <Text style={styles.label}>Category</Text>
             <Picker
               selectedValue={category}
-              style={styles.input}
               onValueChange={(itemValue) => setCategory(itemValue)}
+              style={styles.input}
             >
               <Picker.Item label="Select category" value="" />
               <Picker.Item label="Foods" value="Foods" />
@@ -118,63 +125,17 @@ const UpdateExpensess: React.FC<UpdateFormProps> = ({ isOpen, closeModal, expens
 };
 
 const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  container: {
-    width: '90%',
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  field: {
-    marginBottom: 15,
-  },
-  label: {
-    fontSize: 16,
-    marginBottom: 5,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
-    height: 40,
-  },
-  buttons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 20,
-  },
-  button: {
-    flex: 1,
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginHorizontal: 5,
-  },
-  closeButton: {
-    backgroundColor: '#888',
-  },
-  updateButton: {
-    backgroundColor: '#007bff',
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
+  overlay: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' },
+  container: { width: '90%', backgroundColor: 'white', padding: 20, borderRadius: 10 },
+  title: { fontSize: 20, fontWeight: 'bold', marginBottom: 20 },
+  field: { marginBottom: 15 },
+  label: { fontSize: 16, marginBottom: 5 },
+  input: { borderWidth: 1, borderColor: '#ccc', borderRadius: 5, padding: 10, height: 40, color: '#0D9488' },
+  buttons: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 },
+  button: { flex: 1, padding: 10, borderRadius: 5, alignItems: 'center', marginHorizontal: 5 },
+  closeButton: { backgroundColor: '#888' },
+  updateButton: { backgroundColor: '#007bff' },
+  buttonText: { color: 'white', fontWeight: 'bold' },
 });
 
 export default UpdateExpensess;

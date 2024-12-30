@@ -45,7 +45,7 @@ function ExpensessSaveForm() {
 
     try {
       const response = await axios.post(
-        'http:// 192.168.249.98:3000/api/saveData',
+        'http://192.168.249.98:3000/api/saveData',
         {
           category: formData.category,
           price: formData.price,

@@ -12,7 +12,7 @@ function ExpensessView() {
   const fetchExpenses = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.169.54:3000/api/getExpensesByUser/${userEmail}`
+        `http://192.168.249.98:3000/api/getExpensesByUser/${userEmail}`
       );
       setexpensesData(response.data);
     } catch (err) {

@@ -1,124 +1,97 @@
-import axios from 'axios';
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
-  TextInput,
-  Button,
+  TouchableOpacity,
   StyleSheet,
   Alert,
-  TouchableOpacity,
   FlatList,
+  ScrollView,
 } from 'react-native';
+import axios from 'axios';
+import UpdateExpensess from './UpdateExpensess'; // Import the UpdateExpensess component
 
-export default function ExpensessCard({expensesData}) {
-
+export default function ExpensessCard({ expensesData }) {
   const [expenses, setExpenses] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Manage modal visibility
+  const [selectedExpense, setSelectedExpense] = useState(null); // Manage the selected expense for update
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http:// 192.168.249.98:3000/api/deleteExpenses/${id}`);
+      await axios.delete(`http://192.168.249.98:3000/api/deleteExpenses/${id}`);
       setExpenses((prevExpenses) =>
-        prevExpenses.filter((expenses) => expenses.id !== id)
+        prevExpenses.filter((expense) => expense.id !== id)
       );
-      Alert.alert('Expensess Delete Succsess');
-      console.log('Delete Don');
+      Alert.alert('Expense Deleted Successfully');
     } catch (error) {
-      Alert.alert('Expensess Canot Delete');
+      Alert.alert('Expense Could Not Be Deleted');
       console.error('Error deleting expense:', error);
     }
+  };
+
+  const handleOpenModal = (expense) => {
+    setSelectedExpense(expense); // Set the selected expense
+    setIsModalOpen(true); // Open the modal
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false); // Close the modal
+    setSelectedExpense(null); // Clear the selected expense
   };
 
   console.log('Card Data: ', expensesData);
 
   return (
-    <FlatList
-      data={expensesData}
-      keyExtractor={item => item.id}
-      renderItem={({item}) => (
-        <View style={styles.card}>
-          <Text style={styles.cardText}>
-            <Text style={styles.bold}>Category:</Text> {item.category}
-          </Text>
-          <Text style={styles.cardText}>
-            <Text style={styles.bold}>Item:</Text> {item.itemName}
-          </Text>
-          <Text style={styles.cardText}>
-            <Text style={styles.bold}>Price:</Text> {item.price}
-          </Text>
-          <Text style={styles.cardText}>
-            <Text style={styles.bold}>Date:</Text> {item.date}
-          </Text>
-          <TouchableOpacity style={styles.updateBtn}>
-            <Text
-              style={{
-                color: '#000000',
-                paddingHorizontal: 6,
-                fontWeight: '700',
-              }}>
-              Update
+    <ScrollView>
+      <FlatList
+        data={expensesData}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.card}>
+            <Text style={styles.cardText}>
+              <Text style={styles.bold}>Category:</Text> {item.category}
             </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.deleteBtn}>
-            <Text
-              style={{
-                color: '#ffffff',
-                paddingHorizontal: 6,
-                fontWeight: '700',
-              }}
-              onPress={() => handleDelete(item.id)}>
-              Delete
+            <Text style={styles.cardText}>
+              <Text style={styles.bold}>Item:</Text> {item.itemName}
             </Text>
-          </TouchableOpacity>
-        </View>
+            <Text style={styles.cardText}>
+              <Text style={styles.bold}>Price:</Text> {item.price}
+            </Text>
+            <Text style={styles.cardText}>
+              <Text style={styles.bold}>Date:</Text> {item.date}
+            </Text>
+            <TouchableOpacity
+              style={styles.updateBtn}
+              onPress={() => handleOpenModal(item)} // Open modal with selected expense
+            >
+              <Text style={{ color: '#000000', paddingHorizontal: 6, fontWeight: '700' }}>
+                Update
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.deleteBtn}
+              onPress={() => handleDelete(item.id)} // Handle delete
+            >
+              <Text style={{ color: '#ffffff', paddingHorizontal: 6, fontWeight: '700' }}>
+                Delete
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      />
+      {/* Update Modal */}
+      {selectedExpense && (
+        <UpdateExpensess
+          isOpen={isModalOpen}
+          closeModal={handleCloseModal}
+          expense={selectedExpense}
+        />
       )}
-    />
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  form: {
-    padding: 16,
-    width: '100%',
-    // flexGrow: 1,
-    color: '#ffffff',
-  },
-  field: {
-    marginBottom: 16,
-    color: '#cccccc',
-  },
-  label: {
-    fontSize: 16,
-    color: '#374151',
-    marginBottom: 4,
-  },
-  input: {
-    height: 48,
-    borderWidth: 1,
-    borderColor: '#D1D5DB',
-    borderRadius: 8,
-    paddingHorizontal: 8,
-    fontSize: 16,
-    color: '#0D9488',
-  },
-  submitBtn: {
-    width: '100%',
-    height: 48,
-    borderWidth: 1,
-    borderColor: '#34D399',
-    borderRadius: 8,
-    paddingHorizontal: 8,
-    fontSize: 16,
-    backgroundColor: '#34D399',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  submitBtnText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#ffffff',
-    paddingHorizontal: 6,
-  },
   card: {
     backgroundColor: '#FFFFFF',
     padding: 16,
@@ -127,7 +100,7 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     elevation: 2,
   },
   cardText: {
@@ -162,5 +135,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
-// export default ExpensessCard
