@@ -39,7 +39,7 @@ export default function ExpensessCard({ expensesData }) {
     setSelectedExpense(null); // Clear the selected expense
   };
 
-  console.log('Card Data: ', expensesData);
+  // console.log('Card Data: ', expensesData);
 
   return (
     <ScrollView>

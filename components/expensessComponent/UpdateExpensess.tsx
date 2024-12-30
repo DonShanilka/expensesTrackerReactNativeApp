@@ -29,6 +29,7 @@ const UpdateExpensess = ({isOpen, closeModal, expense}) => {
   }, [expense]);
 
   const handleUpdate = async () => {
+    // Validate the form fields
     if (!expenseId || !category || !itemName || !price || !date) {
       console.log(
         'ID=' + expenseId,
@@ -41,27 +42,38 @@ const UpdateExpensess = ({isOpen, closeModal, expense}) => {
       return;
     }
 
+    console.log(expenseId,category,itemName,price,date);
+  
+    // Ensure price is a valid number
+    const priceValue = parseFloat(price);
+    if (isNaN(priceValue)) {
+      Alert.alert('Validation Error', 'Price must be a valid number.');
+      return;
+    }
+  
     try {
+      // Sending the request with the updated data
       const response = await axios.put(
         'http://192.168.249.98:3000/api/updateExpenses',
         {
-          id: expenseId,
           category: category,
-          itemName: itemName,
-          price: parseFloat(price),
+          price: priceValue, 
           date: date,
-        },
-      );
-      console.log('Data Updated successfully:', response.data.message);
-      Alert.alert('Success', 'Expense Update successfully!'); // Refresh data
+          itemname: itemName,
+          id: expenseId,
+        });
+      // Success message and response logging
+      console.log('Expense Updated:', response.data.message);
+      Alert.alert('Success', 'Expense updated successfully!');
+      closeModal(); // Close the modal or reset the form if needed
     } catch (error) {
+      // Error handling: show detailed error message
       console.error('Error during Update:', error);
-      Alert.alert(
-        'Error',
-        'Update failed: ' + (error.response?.data?.error || 'Unknown error'),
-      );
+      const errorMessage = error.response?.data?.error || error.message || 'Unknown error';
+      Alert.alert('Error', `Update failed: ${errorMessage}`);
     }
   };
+  
 
   return (
     <Modal visible={isOpen} transparent={true} animationType="slide">

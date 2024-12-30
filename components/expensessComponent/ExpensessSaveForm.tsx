@@ -54,7 +54,7 @@ function ExpensessSaveForm() {
           userEmail: formData.email,
         }
       );
-      console.log('Data saved successfully:', response.data.message);
+      // console.log('Data saved successfully:', response.data.message);
       Alert.alert('Success', 'Expense saved successfully!');
       fetchExpenses(); // Refresh data
     } catch (error) {
