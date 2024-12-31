@@ -1,27 +1,41 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from 'react-native';
 
-const Login = ({ navigation }) => {
+const Login = ({navigation,setIsLoggedIn}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    if (email === '' || password === '') {
-      Alert.alert('Error', 'Please fill in all fields');
-    } else {
-      if (email === 'test@example.com' && password === 'password') {
-        Alert.alert('Success', 'Logged in successfully!');
-        // Navigate to another page if needed
-        // navigation.navigate('HomePage');
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post('http://192.168.249.98:3000/api/login', {
+        email,
+        password,
+      });
+  
+      console.log('API Response:', response.data.userData.email); // Log the API response for debugging
+  
+      if (response.data.userData.email) {
+        await AsyncStorage.setItem('userEmail', response.data.userData.email);
+        setIsLoggedIn(true);
       } else {
-        Alert.alert('Error', 'Invalid email or password');
+        Alert.alert('Login failed', 'Invalid email or password');
       }
+    } catch (error) {
+      console.error('Login error:', error);
+      Alert.alert('Error', 'Something went wrong. Please try again.');
     }
   };
-
-  // const navigation = useNavigation();
-
+  
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
@@ -32,7 +46,7 @@ const Login = ({ navigation }) => {
         keyboardType="email-address"
         autoCapitalize="none"
         value={email}
-        onChangeText={(text) => setEmail(text)}
+        onChangeText={text => setEmail(text)}
       />
 
       <TextInput
@@ -40,7 +54,7 @@ const Login = ({ navigation }) => {
         placeholder="Password"
         secureTextEntry
         value={password}
-        onChangeText={(text) => setPassword(text)}
+        onChangeText={text => setPassword(text)}
       />
 
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
@@ -105,4 +119,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default Login; 

@@ -1,31 +1,57 @@
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import Regiter from './screens/registerScreen/Regiter';
-import Login from './screens/loginScreen/Login';
-import HomeScreen from './screens/homeScreen/HomeScreen';
 import { createStackNavigator } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-// import RootNavigator from './src/navigation/RootNavigator';
+import Login from './screens/loginScreen/Login';
+import Register from './screens/registerScreen/Regiter';
+import MyTabs from './screens/homeScreen/HomeScreen'; // Your bottom tab navigator
+import { Text } from 'react-native';
 
-function App() {
-  
-  const Stack = createStackNavigator();
+const Stack = createStackNavigator();
+
+export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        const userEmail = await AsyncStorage.getItem('userEmail');
+        setIsLoggedIn(!!userEmail);
+      } catch (error) {
+        console.error('Error checking login status:', error);
+        setIsLoggedIn(false);
+      }
+    };
+
+    checkLoginStatus();
+  }, []);
+
+  if (isLoggedIn === null) {
+    return (
+      <GestureHandlerRootView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        {/* Placeholder for a loading screen */}
+        <Text>Loading...</Text>
+      </GestureHandlerRootView>
+    );
+  }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Register" component={Regiter} />
-      </Stack.Navigator>
-    </NavigationContainer>
-    // <HomeScreen/>
-    // <GestureHandlerRootView style={{ flex: 1 }}>
-    //   <NavigationContainer>
-    //     <RootNavigatore />
-    //   </NavigationContainer>
-    // </GestureHandlerRootView>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          {isLoggedIn ? (
+            <Stack.Screen name="Home" component={MyTabs} />
+          ) : (
+            <>
+              <Stack.Screen name="Login">
+                {(props) => <Login {...props} setIsLoggedIn={setIsLoggedIn} />}
+              </Stack.Screen>
+              <Stack.Screen name="Register" component={Register} />
+            </>
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }
-
-export default App;
