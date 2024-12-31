@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Image} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -9,37 +9,52 @@ interface Category {
   category: string;
   amount: number;
   bgColor: string;
+  image?: string; // Optional image URL for the category
 }
 
 const CategoryCard = () => {
   const [categories, setCategories] = useState<Category[]>([
-    {icon: 'utensils', category: 'Foods', amount: 0, bgColor: '#0088FE'},
+    {
+      icon: 'utensils',
+      category: 'Foods',
+      amount: 0,
+      bgColor: '#0088FE',
+      image: 'https://example.com/food.jpg',
+    },
     {
       icon: 'graduation-cap',
       category: 'Education',
       amount: 0,
       bgColor: '#AF19FF',
+      image: 'https://example.com/education.jpg',
     },
-    {icon: 'bus', category: 'Transport', amount: 0, bgColor: '#FF8042'},
+    {
+      icon: 'bus',
+      category: 'Transport',
+      amount: 0,
+      bgColor: '#FF8042',
+      image: 'https://example.com/transport.jpg',
+    },
     {
       icon: 'shopping-cart',
       category: 'Shopping',
       amount: 0,
       bgColor: '#FFBB28',
+      image: 'https://example.com/shopping.jpg',
     },
-    {icon: 'ellipsis-h', category: 'Other', amount: 0, bgColor: '#00C49F'},
+    {
+      icon: 'ellipsis-h',
+      category: 'Other',
+      amount: 0,
+      bgColor: '#00C49F',
+      image: 'https://example.com/other.jpg',
+    },
   ]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userEmail = 'shanilka@gmail.com';
-        // await AsyncStorage.getItem('userEmail');
-        // if (!userEmail) {
-        //   console.error('No user email found in AsyncStorage');
-        //   return;
-        // }
-
+        const userEmail = 'shanilka@gmail.com'; // Replace with actual user email logic
         const response = await axios.get(
           `http://192.168.249.98:3000/api/getCatogoryTotal/${userEmail}`,
         );
@@ -67,7 +82,12 @@ const CategoryCard = () => {
       key={cat.category}
       style={[styles.card, {backgroundColor: cat.bgColor}]}>
       <View style={styles.iconContainer}>
-        <Icon name={cat.icon} size={24} color="#000" />
+        {/* Show the image if provided, otherwise show the icon */}
+        {cat.image ? (
+          <Image source={{uri: cat.image}} style={styles.categoryImage} />
+        ) : (
+          <Icon name={cat.icon} size={24} color="#000" />
+        )}
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.categoryText}>{cat.category}</Text>
@@ -101,7 +121,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     width: 145,
-    height:100,
+    height: 100,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
@@ -114,7 +134,14 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 8,
     marginBottom: 8,
-    height:30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  categoryImage: {
+    width: 30,
+    height: 30,
+    borderRadius: 8,
   },
   textContainer: {
     alignItems: 'center',

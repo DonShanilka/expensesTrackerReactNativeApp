@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/MaterialIcons';  // Import the icon library
+import Icon from 'react-native-vector-icons/MaterialIcons'; // Import the icon library
 
 import Expensess from '../expensesScreen/Expensess';
 import ExpensessView from '../expensessViewScreesn/ExpensessView';
@@ -44,12 +44,25 @@ export default function MyTabs() {
         tabBarActiveTintColor: '#40a598',
         tabBarInactiveTintColor: 'gray',
         tabBarStyle: { backgroundColor: '#f8f9fa' },
-        headerShown: false,
+        headerShown: true, // Enable the header for all screens
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Expensess" component={Expensess} />
-      <Tab.Screen name="ExpensessView" component={ExpensessView} />
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ title: 'Home Screen' }}
+      />
+      <Tab.Screen
+        name="Expensess"
+        component={Expensess}
+        options={{ title: 'Expenses' }} 
+      />
+      <Tab.Screen
+        name="ExpensessView"
+        component={ExpensessView}
+        options={{ title: 'Expenses View'}} 
+        
+      />
     </Tab.Navigator>
   );
 }

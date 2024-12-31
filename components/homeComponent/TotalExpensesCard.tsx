@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-// import { FiDollarSign, FiTrendingUp } from "react-icons/fi"; // Replace with a React Native icon library
-import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/FontAwesome"; // Ensure this is correctly imported
 import axios from "axios";
 
 interface ExpenseData {
@@ -19,14 +18,10 @@ const TotalExpensesCard = () => {
     growthPercentage: 0,
   });
 
-  // const email = 'shanilka@gmail.com';
-
-  // Get the user email from AsyncStorage
   useEffect(() => {
     const fetchEmailAndData = async () => {
       try {
-        const email = 'shanilka@gmail.com';
-        // await AsyncStorage.getItem("userEmail");
+        const email = 'shanilka@gmail.com'; // You can fetch this dynamically from AsyncStorage later
         if (email) {
           fetchData(email);
         }
@@ -36,9 +31,6 @@ const TotalExpensesCard = () => {
     };
     fetchEmailAndData();
   }, []);
-
-  // Function to fetch the expense data
-  // email: string
 
   const fetchData = async (email: string) => {
     try {
@@ -51,20 +43,20 @@ const TotalExpensesCard = () => {
     }
   };
 
-  // fetchData(email);
-
   return (
     <View style={styles.card}>
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerLeft}>
           <View style={styles.iconContainer}>
-            <Icon name="dollar" size={16} color="#1D4ED8" /> {/* Replace with Native icon */}
+            {/* Corrected the icon name to "usd" for FontAwesome */}
+            <Icon name="usd" size={16} color="#1D4ED8" />
           </View>
           <Text style={styles.headerText}>Total Expenses</Text>
         </View>
         <View style={styles.growthContainer}>
-          <Icon name="line-chart" size={16} color="#16A34A" /> {/* Replace with Native icon */}
+          {/* Corrected the icon name to "line-chart" */}
+          <Icon name="line-chart" size={16} color="#16A34A" />
           <Text style={styles.growthText}>{data.growthPercentage}%</Text>
         </View>
       </View>
