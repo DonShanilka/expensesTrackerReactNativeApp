@@ -13,21 +13,21 @@ interface Category {
 
 const CategoryCard = () => {
   const [categories, setCategories] = useState<Category[]>([
-    {icon: 'utensils', category: 'Foods', amount: 0, bgColor: '#e0f2fe'},
+    {icon: 'utensils', category: 'Foods', amount: 0, bgColor: '#0088FE'},
     {
       icon: 'graduation-cap',
       category: 'Education',
       amount: 0,
-      bgColor: '#ffedd5',
+      bgColor: '#AF19FF',
     },
-    {icon: 'bus', category: 'Transport', amount: 0, bgColor: '#dcfce7'},
+    {icon: 'bus', category: 'Transport', amount: 0, bgColor: '#FF8042'},
     {
       icon: 'shopping-cart',
       category: 'Shopping',
       amount: 0,
-      bgColor: '#fee2e2',
+      bgColor: '#FFBB28',
     },
-    {icon: 'ellipsis-h', category: 'Other', amount: 0, bgColor: '#ede9fe'},
+    {icon: 'ellipsis-h', category: 'Other', amount: 0, bgColor: '#00C49F'},
   ]);
 
   useEffect(() => {

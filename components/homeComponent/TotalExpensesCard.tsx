@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     elevation: 4,
     padding: 16,
     position: "absolute",
-    top: "25%",
+    top: "28%",
     left: "5%",
     height: "20%",
     width: "90%",

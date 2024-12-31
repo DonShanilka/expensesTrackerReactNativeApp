@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     padding: 16,
     width: '100%',
     position:'absolute',
-    top:'45%'
+    top:'50%'
   },
 });
 
