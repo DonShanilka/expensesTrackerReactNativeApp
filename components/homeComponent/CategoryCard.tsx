@@ -87,32 +87,34 @@ const CategoryCard = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    padding: 12,
     alignItems: 'center',
   },
   cardContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    gap: 16,
+    gap: 10,
   },
   card: {
-    padding: 16,
+    padding: 12,
     borderRadius: 8,
     alignItems: 'center',
-    width: 160,
+    width: 145,
+    height:100,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-    marginBottom: 16,
+    marginBottom: 8,
   },
   iconContainer: {
     backgroundColor: '#ffffff',
     padding: 8,
     borderRadius: 8,
     marginBottom: 8,
+    height:30,
   },
   textContainer: {
     alignItems: 'center',
