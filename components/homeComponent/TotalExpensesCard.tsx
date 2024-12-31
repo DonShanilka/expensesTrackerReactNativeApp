@@ -43,7 +43,7 @@ const TotalExpensesCard = () => {
   const fetchData = async (email: string) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/expense-summary/${email}`
+        `http://192.168.249.98:3000/api/expense-summary/${email}`
       );
       setData(response.data);
     } catch (error) {
@@ -107,9 +107,9 @@ const styles = StyleSheet.create({
     elevation: 4,
     padding: 16,
     position: "absolute",
-    top: "50%",
+    top: "25%",
     left: "5%",
-    height: "50%",
+    height: "20%",
     width: "90%",
   },
   header: {
