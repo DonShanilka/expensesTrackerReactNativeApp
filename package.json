@@ -18,6 +18,8 @@
     "axios": "^1.7.9",
     "axos": "^0.0.1",
     "cors": "^2.8.5",
+    "lucide-react": "^0.469.0",
+    "lucide-react-native": "^0.469.0",
     "react": "18.3.1",
     "react-native": "0.76.5",
     "react-native-date-picker": "^5.0.8",
@@ -25,6 +27,7 @@
     "react-native-reanimated": "^3.16.6",
     "react-native-safe-area-context": "^5.0.0",
     "react-native-screens": "^4.4.0",
+    "react-native-svg": "^15.10.1",
     "react-native-vector-icons": "^10.2.0"
   },
   "devDependencies": {

@@ -6,12 +6,13 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import Expensess from '../expensesScreen/Expensess';
 import ExpensessView from '../expensessViewScreesn/ExpensessView';
+import CategoryCard from '../../components/homeComponent/CategoryCard';
 
 // Home screen component
 function HomeScreen() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffff' }}>
-      <Text>Home Screen</Text>
+      <CategoryCard/>
     </View>
   );
 }
