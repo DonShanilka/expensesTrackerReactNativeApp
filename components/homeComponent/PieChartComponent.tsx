@@ -84,6 +84,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     width: '100%',
+    position:'absolute',
+    top:'45%'
   },
 });
 

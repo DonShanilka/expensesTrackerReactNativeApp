@@ -8,6 +8,7 @@ import Expensess from '../expensesScreen/Expensess';
 import ExpensessView from '../expensessViewScreesn/ExpensessView';
 import CategoryCard from '../../components/homeComponent/CategoryCard';
 import TotalExpensesCard from '../../components/homeComponent/TotalExpensesCard';
+import PieChartComponent from '../../components/homeComponent/PieChartComponent';
 
 // Home screen component
 function HomeScreen() {
@@ -15,6 +16,7 @@ function HomeScreen() {
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffff' }}>
       <CategoryCard/>
       <TotalExpensesCard/>
+      <PieChartComponent/>
     </View>
   );
 }
