@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ScrollView } from 'react-native';
 
@@ -13,7 +14,7 @@ const Register = ({ navigation }) => {
     setFormData({ ...formData, [field]: value });
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     const { name, email, password, confirmPassword } = formData;
 
     if (!name || !email || !password || !confirmPassword) {
@@ -25,6 +26,19 @@ const Register = ({ navigation }) => {
       Alert.alert('Error', 'Passwords do not match.');
       return;
     }
+
+    try {
+      const response = await axios.post('http://192.168.249.98:3000/api/register', {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+      });
+      Alert.alert("Registration successful: " + response.data.message);
+      // navigate('/login')
+  } catch (error) {
+      console.error('Error during registration:', error);
+      Alert.alert('Registration failed: ' + (error.response?.data?.error || 'Unknown error'));
+  }
 
     Alert.alert('Success', `Welcome ${name}!`);
     navigation.navigate('Login');

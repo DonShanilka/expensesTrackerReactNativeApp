@@ -13,13 +13,13 @@ function App() {
   const Stack = createStackNavigator();
 
   return (
-    // <NavigationContainer>
-    //   <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
-    //     <Stack.Screen name="Login" component={Login} />
-    //     <Stack.Screen name="Register" component={Regiter} />
-    //   </Stack.Navigator>
-    // </NavigationContainer>
-    <HomeScreen/>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Regiter} />
+      </Stack.Navigator>
+    </NavigationContainer>
+    // <HomeScreen/>
     // <GestureHandlerRootView style={{ flex: 1 }}>
     //   <NavigationContainer>
     //     <RootNavigatore />
