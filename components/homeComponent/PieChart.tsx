@@ -8,7 +8,7 @@ interface CategoryData {
   value: number;
 }
 
-const PieChartComponent = () => {
+const PieCharts = () => {
   const [chartData, setChartData] = useState<CategoryData[]>([]);
 
   useEffect(() => {
@@ -89,4 +89,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PieChartComponent;
+export default PieCharts;

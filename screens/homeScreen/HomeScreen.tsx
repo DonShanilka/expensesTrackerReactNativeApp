@@ -8,7 +8,8 @@ import Expensess from '../expensesScreen/Expensess';
 import ExpensessView from '../expensessViewScreesn/ExpensessView';
 import CategoryCard from '../../components/homeComponent/CategoryCard';
 import TotalExpensesCard from '../../components/homeComponent/TotalExpensesCard';
-import PieChartComponent from '../../components/homeComponent/PieChartComponent';
+import PieChartComponent from '../../components/homeComponent/PieChart';
+import BarCharts from '../../components/homeComponent/BarCharts';
 
 // Home screen component
 function HomeScreen() {
@@ -17,6 +18,7 @@ function HomeScreen() {
       <CategoryCard/>
       <TotalExpensesCard/>
       <PieChartComponent/>
+      <BarCharts/>
     </View>
   );
 }
